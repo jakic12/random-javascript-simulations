@@ -1,0 +1,238 @@
+html{
+	font-family: 'Cantarell', sans-serif;
+	color:white;
+	text-align:center;
+	height:100%;
+}
+
+body{
+	background-color: #2c3e50;
+	margin:0px !important;
+	height:100%;
+}
+
+canvas{
+	background-color:white;
+}
+
+.loading{
+	background-color:red;
+}
+
+.done-loading{
+	background-color:green;
+}
+
+#header{
+	background-color: #20354a; 
+	padding: 10px;
+	margin:0px;
+	margin-bottom:50px;
+	height:50px;
+	position:fixed;
+	top:0;
+	width:100%;
+	z-index:30;
+}
+#explanation a{
+	color:white;
+}
+#explanation{
+	margin-top:100px;
+}
+
+#content{
+	margin-top:70px;
+}
+
+h1{
+	margin:0px;
+}
+
+/*sidebar*/
+#sidebar{
+	transition-duration: 0.4s;
+	position:fixed;
+	top:0;
+	left:-320px;
+	/*background-color: rgb(32,33,36);*/
+	height:100%;
+	width:320px;
+	background-color: rgb(50,54,57);
+	z-index:100;
+
+}
+
+.sideHead{
+	background-color: rgb(32,33,36);
+	width:320px;
+	height:70px;
+}
+
+.sideHead a{
+	display:block;
+	text-decoration: none;
+	width:300px;
+	height:70px;
+
+	line-height: 70px;
+
+	color:white;
+	font-size: 30px;
+	transition-duration: 0.5s;
+}
+
+.sideButton{
+	display:block;
+	position:absolute;
+	left:0;
+	top:0;
+	height:70px;
+	width:70px;
+	text-align: center;
+	line-height: 70px;
+	font-size: 50px;
+	/*z-index: 100;*/
+}
+
+.sideButton:hover{
+	cursor:pointer;
+}
+
+.file{
+}
+
+.file a{
+	display:block;
+	text-decoration: none;
+	width:300px;
+	height:40px;
+
+	padding:10px;
+
+	color:white;
+	font-size: 30px;
+	transition-duration: 0.5s;
+	text-align: left;
+
+	/*background-color: rgb(50,54,57);*/
+}
+
+.file a:hover{
+	background-color: rgb(60,64,67);
+}
+/*sidebar*/
+
+/*previewCard*/
+.previewCard{
+	display:inline-block;
+	margin:10px;
+	width:300px;
+	height:300px;
+	background-color: white;
+	color:black;
+	border-radius: 10px;
+	text-decoration: none;
+}
+
+.previewCard a{
+	color:black;
+	text-decoration: none;	
+}
+
+.cardImage{
+	height:200px;
+	width:300px;
+	overflow: hidden;
+}
+.cardImage img{
+	width:300px;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+}
+
+.cardTitle{
+	background: white;
+}
+
+#cardTitle{
+	font-weight: bold;
+}
+
+#cardDesc{
+	font-size: 10px;
+}
+/*previewCard*/
+
+/* http://ianlunn.github.io/Hover/ */
+@-webkit-keyframes hvr-wobble-vertical {
+  16.65% {
+    -webkit-transform: translateY(8px);
+    transform: translateY(8px);
+  }
+  33.3% {
+    -webkit-transform: translateY(-6px);
+    transform: translateY(-6px);
+  }
+  49.95% {
+    -webkit-transform: translateY(4px);
+    transform: translateY(4px);
+  }
+  66.6% {
+    -webkit-transform: translateY(-2px);
+    transform: translateY(-2px);
+  }
+  83.25% {
+    -webkit-transform: translateY(1px);
+    transform: translateY(1px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+@keyframes hvr-wobble-vertical {
+  16.65% {
+    -webkit-transform: translateY(8px);
+    transform: translateY(8px);
+  }
+  33.3% {
+    -webkit-transform: translateY(-6px);
+    transform: translateY(-6px);
+  }
+  49.95% {
+    -webkit-transform: translateY(4px);
+    transform: translateY(4px);
+  }
+  66.6% {
+    -webkit-transform: translateY(-2px);
+    transform: translateY(-2px);
+  }
+  83.25% {
+    -webkit-transform: translateY(1px);
+    transform: translateY(1px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+.hvr-wobble-vertical {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+}
+.hvr-wobble-vertical:hover, .hvr-wobble-vertical:focus, .hvr-wobble-vertical:active {
+  -webkit-animation-name: hvr-wobble-vertical;
+  animation-name: hvr-wobble-vertical;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+}
+
+/* http://ianlunn.github.io/Hover/ */

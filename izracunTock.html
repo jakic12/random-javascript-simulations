@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html style="height:100%">
+<head>
+    <title>Izracun tock za faks</title>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="css/style1.css">
+    <link href="https://fonts.googleapis.com/css?family=Cantarell" rel="stylesheet">
+</head>
+<body>
+        <div id="header"><h1>Izracun tock za faks</h1></div>
+        <div id="controls">
+            
+            delez, upostevanja splošnega uspeha pri poklicni maturi: <input type="text" id="maturaDelez" maxLength="3" value="20" oninput="izracun()"/> % točk,<br>
+            delez, upostevanja splošnega uspeha v 3. in 4. letniku: <input type="text" id="uspehDelez" maxLength="3" value="40" oninput="izracun()"/> % točk,<br>
+            delez, upostevanja uspeha pri maturitetnem predmetu: <input type="text" id="maturitetniPredmetDelez" maxLength="3" value="40" oninput="izracun()"/> % točk<br><hr>
+        </div>
+        
+        <div id="explanation">
+            uspeh na maturi (0-23): <input type="text" id="matura" maxLength="3" value="23" oninput="izracun(); minimum(parseInt(document.getElementById('targetTocke').value))"/>, min stevilo tock: <b id="maturaP"></b><br>
+            uspeh 3. in 4. letnik (uspeh 3. + uspeh 4.)(0-10): <input type="text" id="uspeh" maxLength="3" value="10" oninput="izracun(); minimum(parseInt(document.getElementById('targetTocke').value))"/>, min stevilo tock: <b id="uspehP"></b><br>
+            uspeh maturitetni predmet (2-8): <input type="text" id="maturitetniPredmet" maxLength="3" value="8" oninput="izracun(); minimum(parseInt(document.getElementById('targetTocke').value))" />, min stevilo tock: <b id="maturitetniPredmetP"></b><br>
+            <hr>
+            stevilo tock: <b id="tocke"></b><br>
+
+            zeljeno stevilo tock za vpis <input type="text" id="targetTocke" maxLength="3" oninput="minimum(this.value)" />
+
+        </div>
+
+        <script>
+            function izracun(){
+                var matura =  parseInt(document.getElementById("matura").value);
+                var uspeh = parseInt(document.getElementById("uspeh").value);
+                var predmet = parseInt(document.getElementById("maturitetniPredmet").value);
+    
+                var maturaDelez = parseInt(document.getElementById("maturaDelez").value);
+                var uspehDelez = parseInt(document.getElementById("uspehDelez").value);
+                var maturitetniPredmetDelez = parseInt(document.getElementById("maturitetniPredmetDelez").value);
+                tocke = (maturaDelez/100)*(matura/23*100) + (uspehDelez/100)*(uspeh*10) + (maturitetniPredmetDelez/100)*(predmet/8*  100);
+                console.log(tocke);
+                document.getElementById("tocke").innerHTML = Math.round(tocke*10)/10;
+            }
+
+            function minimum(tocke){
+                var matura =  parseInt(document.getElementById("matura").value);
+                var uspeh = parseInt(document.getElementById("uspeh").value);
+                var predmet = parseInt(document.getElementById("maturitetniPredmet").value);
+    
+                var maturaDelez = parseInt(document.getElementById("maturaDelez").value);
+                var uspehDelez = parseInt(document.getElementById("uspehDelez").value);
+                var maturitetniPredmetDelez = parseInt(document.getElementById("maturitetniPredmetDelez").value);
+
+                document.getElementById("maturaP").innerHTML = Math.round(((tocke-(uspehDelez/100)*(uspeh*10)-(maturitetniPredmetDelez/100)*(predmet/8*100))/(maturaDelez/100))/100*23);
+                document.getElementById("uspehP").innerHTML = Math.round(((tocke-(maturaDelez/100)*(matura/23*100)-(maturitetniPredmetDelez/100)*(predmet/8*100))/(uspehDelez/100))/10);
+                document.getElementById("maturitetniPredmetP").innerHTML = Math.round(((tocke-(uspehDelez/100)*(uspeh*10)-(maturaDelez/100)*(matura/23*100))/(maturitetniPredmetDelez/100))/100*8);
+            }
+
+            izracun();
+        </script>
+        <style>
+            input{
+                width:50px;
+            }
+        </style>
+        </body>

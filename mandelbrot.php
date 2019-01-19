@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html style="height:100%">
+    <head>
+            <?php include("template/config.php") ?>
+            <title>physics</title>
+            <meta name="title" content ="mandelbrot set">
+            <meta name="description" content="The Mandelbrot set is the set of complex numbers `c` for which the function f_c(z)=z^2+c does not diverge when iterated from z=0">
+            <meta property="og:title" content="mandelbrot set" />
+            <meta property="og:description" content="The Mandelbrot set is the set of complex numbers `c` for which the function f_c(z)=z^2+c does not diverge when iterated from z=0" />
+            <meta property="og:image" content="<?= $domain ?>/projects/images/" />
+    </head>
+<body>
+        <?php include("template/HaS.php");?>
+        <div id="content">
+	        <canvas id="myCanvas" height="500" width="500"></canvas>
+	</div>
+	
+        <div id="controls">
+                zoom: <input type="range" min="1" max="100000" value="90" id="zoomRange" oninput="drawWithLoadingStat(this.value, translationX, translationY)" >
+	</div>
+
+	<div id="loading-status" class=""></div>
+<script>
+
+var maxIterations = 100;
+var translationX = 0;
+var translationY = 0;
+
+var colorArray = [];
+
+for(let angle = 0; angle <= 240; angle += 0.1){
+	colorArray.push("hsl(" + angle + ", 100%, " + parseInt(((angle)/240.0)*50.0) + "%)");
+}
+
+console.log(colorArray);
+
+
+var canvas = document.getElementById("myCanvas")
+var ctx = canvas.getContext("2d");
+
+function getMousePos(canvas, evt) {
+	var rect = canvas.getBoundingClientRect();
+	return {
+		x: evt.clientX - rect.left,
+		y: evt.clientY - rect.top
+	};
+}
+
+canvas.addEventListener('click', function(evt){
+	var mousePos = getMousePos(canvas, evt);
+	translationX += mousePos.x - 250;
+	translationY += mousePos.y - 250;
+	document.getElementById("zoomRange").value = parseInt(document.getElementById("zoomRange").value)+300
+
+	drawWithLoadingStat(document.getElementById("zoomRange").value, translationX, translationY);
+});
+
+var loadingStat = document.getElementById("loading-status")
+
+function doneLoading(){
+	loadingStat.className = "done-loading";
+	loadingStat.innerHTML = "done";
+}
+
+function startLoading(message = "loading"){
+	loadingStat.className = "loading";
+	loadingStat.innerHTML = message;
+}
+
+
+function complex(rc,ic){
+    this.rc = rc;
+    this.ic = ic;
+
+    this.r = Math.sqrt(Math.pow(rc,2) + Math.pow(ic,2));
+    this.θ = Math.atan(ic/rc);
+
+    if(isNaN(this.θ)){
+        this.θ = 0;
+    }
+
+    this.add = function(x){
+        if(typeof(x) === "object" ){
+            this.rc += x.rc;
+            this.ic += x.ic;
+
+            this.r = Math.sqrt(Math.pow(this.rc,2) + Math.pow(this.ic,2));
+            this.θ = Math.atan(this.ic/this.rc);
+
+        }else{
+            this.rc += x;
+        }
+    }
+    this.pow = function(x){
+        this.r = Math.pow(this.r,x);
+        this.θ = this.θ * x;
+
+        this.rc = Math.cos(this.θ)*this.r;
+        this.ic = Math.sin(this.θ)*this.r;
+    }
+}
+
+function copyComplex(num){
+    return new complex(num.rc, num.ic);
+}
+
+function add(x,y){
+    if(typeof(x) === "object"){
+        let x1 = copyComplex(x);
+        x1.add(y);
+        return x1;
+    }else if(typeof(y) === "object"){
+        let y1 = copyComplex(y);
+        y1.add(x);
+        return y1;
+    }else{
+        return x+y;
+    }
+}
+
+function power(b,x){
+    if(typeof(b) === "object"){
+        let a = copyComplex(b);
+        a.pow(x);
+        return a;
+    }else{
+        return Math.pow(b,x);
+    }
+}
+
+function draw(zoom, tX=0, tY=0){
+	ctx.clearRect(0,0,canvas.height, canvas.width)
+	
+	for(let i = (-250+tX)/zoom; i < (250+tX)/zoom; i += 1/zoom){
+	    for(let j = (-250+tY)/zoom; j < (250+tY)/zoom; j += 1/zoom){
+		
+		let z = 0;
+		let c = new complex(i,j);
+
+		let drawPoint = true;
+
+		let n = 0;
+		for(; n < maxIterations; n++){
+
+		    z = add(power( z,2 ), c)
+		    
+		    if(z == 0){
+			drawPoint = false;
+			break;
+		    }
+
+		    if(typeof(z) === "object"){
+			if( z.r > 2){
+			    drawPoint = false;
+				    break;
+			}
+		    }else{
+			if( z > 2){
+			    drawPoint = false;
+			    break;
+			}
+		    }
+		}
+
+		if(!drawPoint){
+		    let color = parseInt((n/maxIterations)*colorArray.length);
+		    ctx.fillStyle = colorArray[color];
+		}else{
+		    ctx.fillStyle = "rgb(0,0,0)";
+		}
+		    console.log(ctx.fillStyle);
+		    ctx.fillRect( i*zoom+(250-tX),j*zoom+(250-tY),1,1);
+
+	    }
+	}
+
+	doneLoading();
+}
+
+window.onload = function(){
+	drawWithLoadingStat(90, translationX, translationY);
+}
+
+function drawWithLoadingStat(x,tX=0, tY=0){
+	
+	let maxMaxIterations = maxIterations;
+
+	//loop1(6);
+
+	function loop1(k){
+		if(k <= 10){
+			maxIterations = (k/10)*maxMaxIterations;
+			console.log(maxIterations);
+			startLoading("loading with maxIteration:" + maxIterations);
+			setTimeout(() => {draw(x, tX, tY); loop1(k+2)}, 10);
+		}
+	}
+
+	console.log(maxIterations);
+	startLoading("loading with maxIteration:" + maxIterations);
+	setTimeout(() => draw(x, tX, tY), 10);
+	
+}
+
+
+        </script>
+    </div>
+        <script src="javascript/functionality.js"></script>
+    </body>
